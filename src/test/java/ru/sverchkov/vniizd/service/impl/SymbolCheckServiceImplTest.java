@@ -31,12 +31,12 @@ class SymbolCheckServiceImplTest {
     void callCheck_InputRightString_Wait_EqualsList(){
         String testRequestString = "1 / 2";
         List<Symbol> testRightSymbols = new ArrayList<>();
-        testRightSymbols.add(new Symbol(SymbolType.NUMBER, "1"));
+        testRightSymbols.add(new Symbol(SymbolType.NUMBER, "1.00"));
         testRightSymbols.add(new Symbol(SymbolType.DIV_SYM, "/"));
-        testRightSymbols.add(new Symbol(SymbolType.NUMBER, "2"));
+        testRightSymbols.add(new Symbol(SymbolType.NUMBER, "2.00"));
         testRightSymbols.add(new Symbol(SymbolType.END_STR, ""));
 
-        assertEquals(testRightSymbols,symbolCheckService.check(testRequestString));
+        assertEquals(testRightSymbols, symbolCheckService.check(testRequestString));
     }
 
 
