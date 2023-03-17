@@ -74,7 +74,8 @@ public class SymbolCheckServiceImpl implements SymbolCheckService {
                             charAtIndex = requestString.charAt(index);
                         } while (charAtIndex <= NINE_CHARACTER && charAtIndex >= ZERO_CHARACTER || charAtIndex == ',' || charAtIndex == '.');
                         symbols.add(new Symbol(SymbolType.NUMBER,String.format( "%.2f",Double
-                                .parseDouble(resultString.toString())).replaceAll(",", ".")));
+                                .parseDouble(resultString.toString().replaceAll(",", ".")))
+                                .replaceAll(",", ".")));
                         log.info("Symbol add in symbols list");
                     } else {
                         if (charAtIndex != WHITE_SPACE_CHARACTER) {
