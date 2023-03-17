@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<div id="wrapper">
+  <p>Введите выражение</p>
+  <input id="request" type="text">
+  <button id="submit">
+    Отправить
+  </button>
+
+</div>
+<p>Результат: <b id="result"></b></p>
+<style>
+  #wrapper {
+    display: block;
+  }
+
+  button {
+    margin-top: 20px;
+    display: block;
+  }
+</style>
+<script>
+  document.getElementById('submit').addEventListener('click', async () => {
+    const requestData = document.getElementById('request')?.value;
+
+    console.log(requestData);
+    try {
+      const response = await (await fetch(`/api/v1/calculate`, {
+        body: JSON.stringify({
+          'requestString' : requestData
+        }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })).json();
+      console.log(response)
+      document.getElementById('result').innerHTML = response?.result || response.message
+    } catch(error){
+      //console.log(error.status)
+      document.getElementById('result').innerHTML = error.message;
+    }
+  })
+</script>
+</body>
+</html>
