@@ -10,4 +10,6 @@ public interface OperationService {
     Double multOrDiv(SymbolBuffer symbolBuffer);
 
     Double numOrLeftBrackets(SymbolBuffer symbolBuffer);
+
+    Double powAndSinFunc(SymbolBuffer symbolBuffer);
 }

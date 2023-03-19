@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.sverchkov.vniizd.constants.Symbol;
 import ru.sverchkov.vniizd.constants.SymbolType;
 import ru.sverchkov.vniizd.exception.BadRequestException;
+import ru.sverchkov.vniizd.service.GetPowAndSinFunctionService;
 import ru.sverchkov.vniizd.service.SymbolCheckService;
 
 import java.util.ArrayList;
@@ -16,9 +17,14 @@ public class SymbolCheckServiceImpl implements SymbolCheckService {
     private static final Character ZERO_CHARACTER = '0';
     private static final Character NINE_CHARACTER = '9';
     private static final Character WHITE_SPACE_CHARACTER = ' ';
-    private static final String BAD_REQUEST_MESSAGE = "Вы ввели не правильный запрос" +
-            ". Проверьте корректность введеных данных. ";
+    private static final String BAD_REQUEST_MESSAGE = "Произошла ошибка, проверьте корректность введенных данных";
     private static final String END_STRING = "";
+
+    private final GetPowAndSinFunctionService getPowAndSinFunctionService;
+
+    public SymbolCheckServiceImpl(GetPowAndSinFunctionService getPowAndSinFunctionService) {
+        this.getPowAndSinFunctionService = getPowAndSinFunctionService;
+    }
 
 
     @Override
@@ -79,10 +85,25 @@ public class SymbolCheckServiceImpl implements SymbolCheckService {
                         log.info("Symbol add in symbols list");
                     } else {
                         if (charAtIndex != WHITE_SPACE_CHARACTER) {
-                            log.info("Bad char is: {}", charAtIndex);
-                            throw new BadRequestException(BAD_REQUEST_MESSAGE);
+                            if(charAtIndex >= 'a' && charAtIndex <= 'z'){
+                                StringBuilder resultStringPowFunction = new StringBuilder();
+                                do{
+                                    resultStringPowFunction.append(charAtIndex);
+                                    index++;
+                                    if(index >= requestString.length()) {
+                                        break;
+                                    }
+                                    charAtIndex = requestString.charAt(index);
+                                } while (charAtIndex >= 'a' && charAtIndex <= 'z');
+                                if(getPowAndSinFunctionService.getFunction().containsKey(resultStringPowFunction.toString())){
+                                    symbols.add(new Symbol(SymbolType.FUNC_NAME, resultStringPowFunction.toString()));
+                                } else {
+                                    throw new BadRequestException(BAD_REQUEST_MESSAGE);
+                                }
+                            }
+                        } else {
+                            index++;
                         }
-                        index++;
                     }
             }
         }

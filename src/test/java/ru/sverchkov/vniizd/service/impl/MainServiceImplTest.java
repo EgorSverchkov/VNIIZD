@@ -9,8 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MainServiceImplTest {
-    private final SymbolCheckServiceImpl symbolCheckService = new SymbolCheckServiceImpl();
-    private final OperationServiceImpl operationService = new OperationServiceImpl();
+    private final GetPowAndSinFunctionServiceImpl getPowFunctionService = new GetPowAndSinFunctionServiceImpl();
+    private final SymbolCheckServiceImpl symbolCheckService = new SymbolCheckServiceImpl(getPowFunctionService);
+    private final OperationServiceImpl operationService = new OperationServiceImpl(getPowFunctionService);
     private final ValidateServiceImpl validateService = new ValidateServiceImpl();
     private final MainServiceImpl mainService = new MainServiceImpl(symbolCheckService
             , operationService, validateService);
@@ -34,7 +35,7 @@ class MainServiceImplTest {
         BadRequestException badRequestWithWrongDataException = assertThrows(BadRequestException.class
                 , () -> mainService.getResult(testRequestDto));
 
-        assertEquals("Вы ввели не правильный запрос. Проверьте корректность введеных данных. "
+        assertEquals("Произошла ошибка, проверьте корректность введенных данных"
                 , badRequestWithWrongDataException.getMessage());
     }
 
