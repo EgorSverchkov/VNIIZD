@@ -28,7 +28,7 @@ public class MainServiceImpl implements MainService {
         validateService.validateRequest(requestDto);
         log.info("Start calculating in mainService");
         Double operate = operationService
-                .operate(new SymbolBuffer(symbolCheckService.check(requestDto.getRequestString())));
+                .operate(new SymbolBuffer(symbolCheckService.check(requestDto.getRequestString().toLowerCase())));
         validateService.validateResult(operate);
         return operate;
     }
