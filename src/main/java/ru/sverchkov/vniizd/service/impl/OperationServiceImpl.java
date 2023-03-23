@@ -27,7 +27,7 @@ public class OperationServiceImpl implements OperationService {
     public Double operate(SymbolBuffer symbolBuffer) {
         log.info("Start operating: {}", symbolBuffer.toString());
         Symbol symbol = symbolBuffer.nextSymbol();
-        if(symbol.getSymbolType() == SymbolType.END_STR){
+        if (symbol.getSymbolType() == SymbolType.END_STR) {
             log.info("Result is: {}", ZERO);
             return Double.valueOf(ZERO);
         } else {
@@ -40,7 +40,7 @@ public class OperationServiceImpl implements OperationService {
     public Double plusOrMinus(SymbolBuffer symbolBuffer) {
         log.info("PlusOrMinus method start with: {}", symbolBuffer.toString());
         Double value = multOrDiv(symbolBuffer);
-        log.info("Value in PlusOrMinus is: {}",value);
+        log.info("Value in PlusOrMinus is: {}", value);
         while (true) {
             Symbol symbol = symbolBuffer.nextSymbol();
             log.info("Symbol in plusOrMinus is: {}", symbol.getValue());
@@ -134,7 +134,7 @@ public class OperationServiceImpl implements OperationService {
         log.info("Starting pow number:  {}", value);
         Symbol symbol = symbolBuffer.nextSymbol();
         log.info("Symbol in pow method is: {}", symbol);
-        if(symbol.getSymbolType() != SymbolType.LEFT_BRACKET){
+        if (symbol.getSymbolType() != SymbolType.LEFT_BRACKET) {
             throw new BadRequestException(BAD_REQUEST_EXCEPTION_MESSAGE);
         }
 
@@ -142,12 +142,12 @@ public class OperationServiceImpl implements OperationService {
         symbol = symbolBuffer.nextSymbol();
         boolean unar = false;
         log.info("Symbol in middle of pow method is: {}", symbol);
-        if(symbol.getSymbolType() == SymbolType.MINUS_SYM){
+        if (symbol.getSymbolType() == SymbolType.MINUS_SYM) {
             symbol = symbolBuffer.nextSymbol();
             unar = true;
         }
-        if(symbol.getSymbolType() != SymbolType.RIGHT_BRACKET){
-            if(symbol.getSymbolType() == SymbolType.FUNC_NAME){
+        if (symbol.getSymbolType() != SymbolType.RIGHT_BRACKET) {
+            if (symbol.getSymbolType() == SymbolType.FUNC_NAME) {
                 symbolBuffer.backSymbol();
                 powNumber = powAndSinFunc(symbolBuffer);
             } else {
@@ -158,12 +158,12 @@ public class OperationServiceImpl implements OperationService {
         }
         log.info("Pow number is: {}", powNumber);
         Symbol symbolNext = symbolBuffer.nextSymbol();
-        if(symbolNext.getSymbolType() == SymbolType.END_STR){
+        if (symbolNext.getSymbolType() == SymbolType.END_STR) {
             throw new BadRequestException(BAD_REQUEST_EXCEPTION_MESSAGE);
         }
 
-        if(unar) {
-            return - getPowAndSinFunctionService.getFunction().get(value).use(powNumber);
+        if (unar) {
+            return getPowAndSinFunctionService.getFunction().get(value).use(-powNumber);
         } else {
             return getPowAndSinFunctionService.getFunction().get(value).use(powNumber);
         }
