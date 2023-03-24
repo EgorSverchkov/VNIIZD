@@ -34,6 +34,28 @@ public class GetPowAndSinFunctionServiceImpl implements GetPowAndSinFunctionServ
             return Double.parseDouble(String.format("%.4f",Math.sin(Math.toRadians(number)))
                     .replaceAll(",","."));
         });
+        result.put("cos", number -> {
+            if(number == null || number.isInfinite() || number.isNaN()){
+                throw new BadRequestException(BAD_REQUEST_MESSAGE);
+            }
+            log.info("Number: {} in cos is: {}",number, Math.toRadians(number));
+            log.info("Cosinus number in getFunction is: {}", Math.cos(Math.toRadians(number)));
+            return Double.parseDouble(String.format("%.4f",Math.cos(Math.toRadians(number)))
+                    .replaceAll(",","."));
+        });
+        result.put("sqrt", number -> {
+            if(number == null || number.isInfinite() || number.isNaN()) {
+                throw new BadRequestException(BAD_REQUEST_MESSAGE);
+            }
+            if(number == -1){
+                throw new BadRequestException("Калькулятор не поддерживает комплексные числа");
+            }
+            if(number < 0){
+                throw new BadRequestException(BAD_REQUEST_MESSAGE);
+            }
+            log.info("Sqrt number in getFunction is: {}", Math.pow(number, TWO_POW));
+            return Math.sqrt(number);
+        });
         log.info("Result in pow is: {}", result);
         return result;
     }
